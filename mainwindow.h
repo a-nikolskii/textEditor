@@ -13,6 +13,10 @@
 #include <QDir>
 #include <QTextStream>
 #include <QTranslator>
+#include <QPrinter>
+#include <QPrintDialog>
+#include <QPainter>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -36,6 +40,7 @@ private slots:
     void slotOpen_file();
     void slotNew_file();
     void slotOpen_file_readOnly();
+    void slotPrint();
     void slotChangeWindowTitle(const QString& str);
     void slotChangeLanguage(QAction* pact);
 
@@ -50,13 +55,34 @@ private:
     QString m_langPath;
     QString m_currLang;
     QTranslator m_translator;
+    QTranslator m_translatorQt;
 
 
 private:
     void createMenu();
-    QMenu* createLanguagesMenu();
+    void createAction();
+    void createLanguagesMenu();
     void switchTranslator(QTranslator& translator, const QString& filename);
-    void retranslate();
+    std::shared_ptr<QStringList> strToStringList(QString* pstr);
+
+private:
+    QMenu* pmenuFile;
+    QMenu* pmenuTools;
+    QMenu* pmenuHelp;
+
+    QMenu* pmenuLanguage;
+
+    QAction* pactNewFile;
+    QAction* pactOpenFile;
+    QAction* pactOpenRO;
+    QAction* pactSave;
+    QAction* pactSaveAs;
+    QAction* pactPrint;
+    QAction* pactQuit;
+
+
+
+
 
 protected:
     void changeEvent(QEvent*) override;

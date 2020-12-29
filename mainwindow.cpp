@@ -4,6 +4,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), m_filename("")
 {
 
+    createAction();
     createMenu();
 
     m_textEdit = (new QPlainTextEdit());
@@ -29,40 +30,22 @@ MainWindow::~MainWindow()
 void MainWindow::createMenu(){
     m_pmenuBar = new QMenuBar(this);
 
-    QMenu* pmenuFile = new QMenu(tr("&File"));
-    QMenu* pmenuTools = new QMenu(tr("&Tools"));
-    QMenu* pmenuHelp = new QMenu(tr("&Help"));
-
-
-    pmenuFile->addAction(tr("New File"),
-                           this,
-                           SLOT(slotNew_file()),
-                           QKeySequence("CTRL+N")
-                           );
-    pmenuFile->addAction(tr("Open File..."),
-                           this,
-                           SLOT(slotOpen_file()),
-                           QKeySequence("CTRL+O")
-                           );
-    pmenuFile->addAction(tr("Open File in RO mode..."),
-                           this,
-                           SLOT(slotOpen_file_readOnly())
-                           );
-    pmenuFile->addAction(tr("Save"),
-                           this,
-                           SLOT(slotSave()),
-                           QKeySequence("CTRL+S")
-                           );
-    pmenuFile->addAction(tr("Save As..."),
-                           this,
-                           SLOT(slotSave_as()));
+    pmenuFile = new QMenu(tr("&File"));
+    pmenuFile->addAction(pactNewFile);
+    pmenuFile->addAction(pactOpenFile);
+    pmenuFile->addAction(pactOpenRO);
+    pmenuFile->addAction(pactSave);
+    pmenuFile->addAction(pactSaveAs);
     pmenuFile->addSeparator();
-    pmenuFile->addAction(tr("&Quit"),
-                           QApplication::instance(),
-                           SLOT(quit()),
-                           QKeySequence("CTRL+Q"));
+    pmenuFile->addAction(pactPrint);
+    pmenuFile->addSeparator();
+    pmenuFile->addAction(pactQuit);
 
-    pmenuTools->addMenu(createLanguagesMenu());
+    pmenuTools = new QMenu(tr("&Tools"));
+    createLanguagesMenu();
+    pmenuTools->addMenu(pmenuLanguage);
+
+    pmenuHelp = new QMenu(tr("&Help"));
 
     m_pmenuBar->addMenu(pmenuFile);
     m_pmenuBar->addMenu(pmenuTools);
@@ -71,9 +54,42 @@ void MainWindow::createMenu(){
 
 
 
-QMenu* MainWindow::createLanguagesMenu(){
 
-    QMenu* psubmLang = new QMenu(tr("&Language"));
+void MainWindow::createAction(){
+
+    pactNewFile = new QAction(tr("New File"), this);
+    pactNewFile->setShortcut(QKeySequence("CTRL+N"));
+    connect(pactNewFile, SIGNAL(triggered()), this, SLOT(slotNew_file()));
+
+    pactOpenFile = new QAction(tr("Open File..."), this);
+    pactOpenFile->setShortcut(QKeySequence("CTRL+O"));
+    connect(pactOpenFile, SIGNAL(triggered()), this, SLOT(slotOpen_file()));
+
+    pactOpenRO = new QAction(tr("Open for read..."), this);
+    connect(pactOpenRO, SIGNAL(triggered()), this, SLOT(slotOpen_file_readOnly()));
+
+
+    pactSave = new QAction(tr("Save"), this);
+    pactSave->setShortcut(QKeySequence("CTRL+S"));
+    connect(pactSave, SIGNAL(triggered()), this, SLOT(slotSave()));
+
+    pactSaveAs = new QAction(tr("Save as ..."), this);
+    connect(pactSaveAs, SIGNAL(triggered()), this, SLOT(slotSave_as()));
+
+    pactPrint = new QAction(tr("Print"), this);
+    pactPrint->setShortcut(QKeySequence("CTRL+P"));
+    connect(pactPrint, SIGNAL(triggered()), this, SLOT(slotPrint()));
+
+    pactQuit = new QAction(tr("Quit"), this);
+    pactQuit->setShortcut(QKeySequence("CTRL+Q"));
+    connect(pactQuit, SIGNAL(triggered()), QApplication::instance(), SLOT(quit()));
+}
+
+
+
+void MainWindow::createLanguagesMenu(){
+
+    pmenuLanguage = new QMenu(tr("&Language"), this);
 
     QActionGroup* plangGroup = new QActionGroup(this);
     connect(plangGroup, SIGNAL(triggered(QAction*)),
@@ -95,20 +111,21 @@ QMenu* MainWindow::createLanguagesMenu(){
 
         lang = QLocale::languageToString(QLocale(locale).language()); // "Russian"
 
+        if (lang == "Russian"){
+            lang = "Русский";
+        }
+
         QAction* action = new QAction(lang, this);
         action->setCheckable(true);
         action->setData(locale);
 
         plangGroup->addAction(action);
-        psubmLang->addAction(action);
+        pmenuLanguage->addAction(action);
 
         if (defaultLocale == locale){
             action->setChecked(true);
         }
     }
-
-
-    return psubmLang;
 }
 
 
@@ -185,7 +202,7 @@ void MainWindow::slotOpen_file(){
 void MainWindow::slotNew_file(){
     *m_data = "";
     m_filename = "";
-    emit changeWindowTitle("New File");
+    emit changeWindowTitle(tr("New File.txt"));
     m_textEdit->setPlainText(*m_data);
 }
 
@@ -193,13 +210,61 @@ void MainWindow::slotNew_file(){
 
 void MainWindow::slotChangeWindowTitle(const QString& str){
     setWindowTitle(str);
-    m_textEdit->setReadOnly(true);
 }
 
 
 
 void MainWindow::slotOpen_file_readOnly(){
     slotOpen_file();
+    m_textEdit->setReadOnly(true);
+}
+
+
+
+void MainWindow::slotPrint(){
+    QPrinter printer;
+    QPrintDialog dlg(&printer, this);
+    dlg.setWindowTitle(tr("Print"));
+    if (dlg.exec() != QDialog::Accepted){
+        return;
+    }
+    else {
+        std::shared_ptr<QStringList> list = strToStringList(m_data);
+        int line = 0;
+        QPainter painter;
+        painter.begin(&printer);
+        int w = painter.window().width();
+        int h = painter.window().height();
+        int amount = list->count();
+        QFont font = painter.font();
+        QFontMetrics fmetrics(font);
+        for (int i = 0; i < amount; i++)
+        {
+               QPointF pf;
+               pf.setX(10);
+               pf.setY(line);
+               painter.drawText(pf, list->at(i));
+               line += fmetrics.height();
+               if (h - line <= fmetrics.height())
+               {
+                   printer.newPage();
+                   line = 0;
+               }
+
+           }
+           painter.end();
+    }
+}
+
+
+
+std::shared_ptr<QStringList> MainWindow::strToStringList(QString* pstr) {
+    std::shared_ptr<QStringList> list = std::make_shared<QStringList>();
+    QTextStream stream(pstr, QIODevice::ReadOnly);
+    while (!stream.atEnd()){
+        list->append(stream.readLine());
+    }
+    return list;
 }
 
 
@@ -212,6 +277,7 @@ void MainWindow::slotChangeLanguage(QAction* pact){
             QLocale::setDefault(locale);
             QString languageName = QLocale::languageToString(locale.language());
             switchTranslator(m_translator, QString("QtLanguage_%1.qm").arg(rLanguage));
+            switchTranslator(m_translatorQt, QString("qtbase_%1.qm").arg(rLanguage));
         }
     }
 }
@@ -230,15 +296,26 @@ void MainWindow::switchTranslator(QTranslator& translator, const QString& filena
 
 void MainWindow::changeEvent(QEvent* event){
     if (event->type() == QEvent::LanguageChange){
-        retranslate();
+
+        pmenuFile->setTitle(tr("&File"));
+        pactNewFile->setText(tr("New File"));
+        pactOpenFile->setText(tr("Open File..."));
+        pactOpenRO->setText(tr("Open for read..."));
+        pactSave->setText(tr("Save"));
+        pactSaveAs->setText(tr("Save as ..."));
+        pactPrint->setText(tr("Print"));
+        pactQuit->setText(tr("Quit"));
+
+        pmenuTools->setTitle(tr("&Tools"));
+        pmenuLanguage->setTitle(tr("&Language"));
+
+        pmenuHelp->setTitle(tr("&Help"));
+
+        if (m_filename.isEmpty()) {
+            emit changeWindowTitle(tr("New File.txt"));
+        }
     }
     else QMainWindow::changeEvent(event);
 }
-
-
-void MainWindow::retranslate(){
-    qDebug() << "retranslate function doesn`t implement";
-}
-
 
 
