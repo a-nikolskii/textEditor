@@ -16,6 +16,7 @@
 #include <QPrinter>
 #include <QPrintDialog>
 #include <QPainter>
+#include <QMessageBox>
 
 
 QT_BEGIN_NAMESPACE
@@ -41,6 +42,7 @@ private slots:
     void slotNew_file();
     void slotOpen_file_readOnly();
     void slotPrint();
+    void slotAbout_app();
     void slotChangeWindowTitle(const QString& str);
     void slotChangeLanguage(QAction* pact);
 
@@ -79,6 +81,7 @@ private:
     QAction* pactSaveAs;
     QAction* pactPrint;
     QAction* pactQuit;
+    QAction* pactAboutApp;
 
 
 

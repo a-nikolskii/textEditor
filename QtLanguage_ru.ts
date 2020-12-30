@@ -5,95 +5,117 @@
     <name>MainWindow</name>
     <message>
         <location filename="mainwindow.cpp" line="33"/>
-        <location filename="mainwindow.cpp" line="295"/>
+        <location filename="mainwindow.cpp" line="319"/>
         <source>&amp;File</source>
         <translation>Файл</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="44"/>
-        <location filename="mainwindow.cpp" line="303"/>
+        <location filename="mainwindow.cpp" line="328"/>
         <source>&amp;Tools</source>
-        <translation type="unfinished">Инструменты</translation>
+        <translation>Инструменты</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="48"/>
-        <location filename="mainwindow.cpp" line="306"/>
+        <location filename="mainwindow.cpp" line="331"/>
         <source>&amp;Help</source>
         <translation>Справка</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="60"/>
-        <location filename="mainwindow.cpp" line="296"/>
+        <location filename="mainwindow.cpp" line="61"/>
+        <location filename="mainwindow.cpp" line="320"/>
         <source>New File</source>
         <translation>Новый файл</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="64"/>
-        <location filename="mainwindow.cpp" line="297"/>
+        <location filename="mainwindow.cpp" line="65"/>
+        <location filename="mainwindow.cpp" line="321"/>
         <source>Open File...</source>
         <translation>Открыть файл</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="68"/>
-        <location filename="mainwindow.cpp" line="298"/>
+        <location filename="mainwindow.cpp" line="69"/>
+        <location filename="mainwindow.cpp" line="322"/>
         <source>Open for read...</source>
         <translation>Открыть для чтения</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="72"/>
-        <location filename="mainwindow.cpp" line="299"/>
+        <location filename="mainwindow.cpp" line="73"/>
+        <location filename="mainwindow.cpp" line="323"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="76"/>
-        <location filename="mainwindow.cpp" line="300"/>
+        <location filename="mainwindow.cpp" line="77"/>
+        <location filename="mainwindow.cpp" line="324"/>
         <source>Save as ...</source>
         <translation>Сохранить как...</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="79"/>
-        <location filename="mainwindow.cpp" line="223"/>
+        <location filename="mainwindow.cpp" line="80"/>
+        <location filename="mainwindow.cpp" line="232"/>
+        <location filename="mainwindow.cpp" line="325"/>
         <source>Print</source>
         <translation>Печать</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="83"/>
-        <location filename="mainwindow.cpp" line="301"/>
+        <location filename="mainwindow.cpp" line="84"/>
+        <location filename="mainwindow.cpp" line="326"/>
         <source>Quit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="92"/>
-        <location filename="mainwindow.cpp" line="304"/>
+        <location filename="mainwindow.cpp" line="88"/>
+        <source>About App</source>
+        <translation>О приложении</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="97"/>
+        <location filename="mainwindow.cpp" line="329"/>
         <source>&amp;Language</source>
         <translation>Язык</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="154"/>
+        <location filename="mainwindow.cpp" line="163"/>
         <source>Save File</source>
         <translation>Сохранение файла</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="156"/>
+        <location filename="mainwindow.cpp" line="165"/>
         <source>all(*.*);;*.txt(*.txt)</source>
         <translation>все(*.*);;*.txt(*.txt)</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="171"/>
+        <location filename="mainwindow.cpp" line="180"/>
         <source>Open File</source>
         <translation>Открытие файла</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="173"/>
+        <location filename="mainwindow.cpp" line="182"/>
         <source>*.txt(*.txt);;all(*.*)</source>
         <translation>*.txt(*.txt);;все(*.*)</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="201"/>
-        <location filename="mainwindow.cpp" line="309"/>
+        <location filename="mainwindow.cpp" line="210"/>
+        <location filename="mainwindow.cpp" line="334"/>
         <source>New File.txt</source>
         <translation>Новый файл.txt</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="269"/>
+        <source>About application</source>
+        <translation>О приложении</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="270"/>
+        <source>Text Editor
+version 1.0
+2020
+contacts: alexandr.nikolskii@gmail.com</source>
+        <translation>Text Editor
+версия 1.0
+2020
+контакты: alexandr.nikolskii@gmail.com</translation>
     </message>
 </context>
 </TS>

@@ -46,12 +46,12 @@ void MainWindow::createMenu(){
     pmenuTools->addMenu(pmenuLanguage);
 
     pmenuHelp = new QMenu(tr("&Help"));
+    pmenuHelp->addAction(pactAboutApp);
 
     m_pmenuBar->addMenu(pmenuFile);
     m_pmenuBar->addMenu(pmenuTools);
     m_pmenuBar->addMenu(pmenuHelp);
 }
-
 
 
 
@@ -83,6 +83,9 @@ void MainWindow::createAction(){
     pactQuit = new QAction(tr("Quit"), this);
     pactQuit->setShortcut(QKeySequence("CTRL+Q"));
     connect(pactQuit, SIGNAL(triggered()), QApplication::instance(), SLOT(quit()));
+
+    pactAboutApp = new QAction(tr("About App"), this);
+    connect(pactAboutApp, SIGNAL(triggered()), this, SLOT(slotAbout_app()));
 }
 
 
@@ -208,6 +211,19 @@ void MainWindow::slotNew_file(){
 
 
 
+void MainWindow::slotAbout_app(){
+    //std::shared_ptr<QMessageBox> pmes = std::make_shared<QMessageBox>(new QMessageBox);
+    QMessageBox::information(this, tr("About application"),
+                             tr("Text Editor\n"
+                                "version 1.0\n"
+                                "2020"
+                                "\n"
+                                "contacts: "
+                                "alexandr.nikolskii@gmail.com"));
+}
+
+
+
 void MainWindow::slotChangeWindowTitle(const QString& str){
     setWindowTitle(str);
 }
@@ -310,6 +326,8 @@ void MainWindow::changeEvent(QEvent* event){
         pmenuLanguage->setTitle(tr("&Language"));
 
         pmenuHelp->setTitle(tr("&Help"));
+        pactAboutApp->setText(tr("About App"));
+
 
         if (m_filename.isEmpty()) {
             emit changeWindowTitle(tr("New File.txt"));
